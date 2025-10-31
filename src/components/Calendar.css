@@ -1,0 +1,40 @@
+.calendarWrapper {
+  padding: 15px;
+  color: white;
+  text-align: center;
+}
+
+.calendarHeader h2 {
+  margin-bottom: 10px;
+}
+
+.calendarWeekdays,
+.calendarGrid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.calendarWeekday {
+  font-weight: bold;
+  padding: 5px 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.calendarDay {
+  padding: 10px;
+  margin: 2px;
+  background-color: rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  transition: background-color 0.2s;
+}
+
+.calendarDay:hover {
+  background-color: rgba(255, 255, 255, 0.25);
+  cursor: pointer;
+}
+
+.today {
+  background-color: #ffc107;
+  color: black;
+  font-weight: bold;
+}

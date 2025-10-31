@@ -1,0 +1,42 @@
+.Wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 17px;
+  min-width: 300px;
+  
+}
+.loginWrap {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+.signupWrap {
+  display: flex;
+  flex-direction: column;
+  min-width: 300px;
+}
+.welcome {
+  color: rgba(47, 106, 135);
+  font-size: clamp(20px, 2vw + 20px, 35px);
+  font-weight: 500;
+}
+.loginWrapBottom {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.backToLogin{
+    color: rgba(0, 0, 0,0.7);
+    text-decoration: underline;
+    cursor: pointer;
+}
+.signupError{
+  color: red;
+  font-size: 12px;
+}
+.input{
+  margin-top: 17px;
+}
+.marginP{
+  margin-top: 5px;
+}

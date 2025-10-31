@@ -1,0 +1,173 @@
+* {
+  box-sizing: border-box;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  height: 100vh;
+  width: 100vw;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(110, 178, 204),
+    rgb(234, 108, 54)
+  );
+}
+/* rgb(115, 45, 115), */
+.brandName {
+  color: rgba(234, 108, 54);
+  font-size: clamp(70px, 2vw + 70px, 100px);
+  font-weight: 700;
+}
+.brandNameDesc {
+  margin-top: 20px;
+  color: white;
+  font-size: clamp(17px, 2vw + 17px, 40px);
+  font-weight: 500;
+}
+.mainBoard {
+  margin-top: 30px;
+  height: 50vh; /* full viewport height */
+  width: 70vw;
+  min-width: 340px;
+  min-height: 470px;
+  display: flex;
+  background-color: white;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* ============= Mainboard Section============= */
+.mainBoardLeft {
+  height: 100%;
+  width: 35%;
+  border-radius: 15px;
+}
+
+.mainBoardRight {
+  height: 100%;
+  width: 65%;
+  border-top-right-radius: 15px;
+  border-bottom-right-radius: 15px;
+}
+
+.mainBoardRight {
+  background-image: url("/rightMainImage.png");
+  background-color: black;
+  background-position: center center;
+  background-repeat: no-repeat;
+  background-size: 1000px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+  transition: 0.9s;
+  overflow: hidden;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.mainBoardRight:hover {
+  background-position: left center;
+  background-size: 1400px; /* this will now transition */
+}
+.RightContent {
+  line-height: 1.3;
+  font-size: 30px;
+  font-weight: 500;
+  margin: 0 30px;
+  z-index: 2;
+  color: white;
+  opacity: 0;
+  transform: translateY(20px); /* slightly move down */
+  transition: opacity 1s ease, transform 1s ease;
+}
+.mainBoardRight:hover .RightContent {
+  opacity: 1;
+  transform: translateY(0); /* move into place */
+}
+.mainBoardRight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0); /* start transparent */
+  transition: background-color 0.5s ease;
+}
+.mainBoardRight:hover::before {
+  background-color: rgba(0, 0, 0, 0.5); /* dark overlay on hover */
+}
+.mainBoardLeft {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.changeCta{
+  color: rgba(0, 0, 0, 0.7);
+}
+.changeCta:hover{
+  color: rgb(234, 108, 54)
+}
+/*=================== Responsive =======================*/
+.rotateNotice{
+  display: none;
+}
+.warning{
+  font-size: 30px;
+  font-weight: 500;
+}
+@media only screen and (max-height: 650px) {
+  .main {
+    display: none;
+  }
+  .rotateNotice {
+    display: flex; /* show a message to rotate */
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+  }
+}
+
+@media only screen and (max-width: 900px) {
+  .mainBoardRight {
+    display: none;
+  }
+  .mainBoardLeft {
+    width: 100%;
+  }
+  .main{
+    justify-content: start;
+  }
+  .brandName{
+    padding-top: 30px;
+  }
+}
+@media only screen and (min-width: 900px) and (max-width: 1300px) {
+  .mainBoard {
+    width: 85vw;
+  }
+  .mainBoardRight {
+    width: 55%;
+  }
+  .mainBoardLeft {
+    width: 45%;
+  }
+}
+@media only screen and (min-width: 800) and (min-width: 1500px) {
+  .mainBoard {
+    height: 60vh;
+  }
+  .mainBoardRight {
+    background-size: 1200px;
+  }
+}
+@media only screen and (min-width: 1800px) {
+  .mainBoard {
+    height: 60vh;
+    width: 1260px;
+  }
+  .mainBoardRight {
+    background-size: 1200px;
+  }
+}

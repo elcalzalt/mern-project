@@ -1,0 +1,45 @@
+.container {
+  background-color: rgb(125, 39, 39);
+  min-width: calc(100vw);
+  min-height: 98vh;
+  display: grid;
+  padding: 15px;
+  grid-template-columns: 1.4fr 0.8fr 1fr;
+  grid-template-rows: 0.4fr 1.8fr 1.5fr 1fr;
+  gap: 20px 20px;
+  grid-auto-flow: row;
+  grid-template-areas:
+    "quote quote quote"
+    "calendar todo todo "
+    ". todo todo "
+    ". . .";
+}
+
+.quote {
+  grid-area: quote;
+  background-color: yellow;
+}
+
+.todo {
+  grid-area: todo;
+  background-color: white;
+  border-radius: 15px;
+}
+
+.calendar {
+  grid-area: calendar;
+  background-color: rgb(47, 69, 72);
+  border-radius: 10px;
+}
+
+@media (max-width: 900px) {
+  .container {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "quote"
+      " calendar "
+      " todo "
+      "todo"
+      ;
+  }
+}
