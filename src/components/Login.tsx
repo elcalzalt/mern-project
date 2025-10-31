@@ -15,7 +15,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "@mui/material/Button";
 const signInSchema = z.object({
-  username: z.string().min(3, "At least 3 character for username"),
+  email:z.email("Please enter valid email"),
   password: z.string().min(6, "At least 6 character for password"),
 });
 type SignInFormValues = z.infer<typeof signInSchema>;
@@ -28,9 +28,9 @@ export const Login = () => {
     resolver: zodResolver(signInSchema),
   });
   const onSubmit = async (data: SignInFormValues) => {
-    setUsername(data.username);
+    setUsername(data.email);
     setPassword(data.password);
-    await handleLogin(data.username, data.password);
+    await handleLogin(data.email, data.password);
   };
 
   const [showPassword, setShowPassword] = React.useState(false);
@@ -43,25 +43,28 @@ export const Login = () => {
     event.preventDefault();
   };
   const navigate = useNavigate();
-  const handleLogin = async (username: string, password: string) => {
-    try {
-      const response = await fetch("http://localhost:5000/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+  const handleLogin = async (email: string, password: string) => {
+  try {
+    const response = await fetch("http://localhost:5050/api/user/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-      const data = await response.json();
-      if (response.ok) {
-        navigate("/feature");
-      } else {
-        alert(data.message || "Login failed");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Server error");
+    const data = await response.json();
+
+    if (response.ok) {
+      localStorage.setItem("token", data.token);  // save JWT
+      navigate("/feature");
+    } else {
+      alert(data.message || "Login failed");
     }
-  };
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Server error");
+  }
+};
+
 
   return (
     <>
@@ -70,13 +73,13 @@ export const Login = () => {
         <TextField
           sx={{ mt: 2 }}
           id="outlined-basic"
-          label="Username"
+          label="email"
           variant="outlined"
           fullWidth
-          {...register("username")}
+          {...register("email")}
         />
-        {errors.username && (
-          <p className="signupError marginP"> {errors.username.message}</p>
+        {errors.email && (
+          <p className="signupError marginP"> {errors.email.message}</p>
         )}
         <FormControl variant="outlined" fullWidth sx={{ mt: 2 }}>
           <InputLabel htmlFor="outlined-adornment-password">

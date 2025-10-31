@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -16,7 +17,8 @@ import Button from "@mui/material/Button";
 const signUpSchema = z.object({
   firstname: z.string().min(1, "At least 1 character for firstname"),
   lastname: z.string().min(1, "At least 1 character for lastname"),
-  username: z.string().min(3, "At least 3 character for username"),
+  //username: z.string().min(3, "At least 3 character for username"),
+  email:z.email("Please enter valid email"),
   password: z.string().min(6, "At least 6 character for password"),
 });
 type SignUpFormValues = z.infer<typeof signUpSchema>;
@@ -28,11 +30,7 @@ export const Signup = () => {
   } = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
   });
-  const onSubmit = (data: SignUpFormValues) => {
-    console.log(data);
-    alert("sign up successfully");
-    // do something with the submitted form values
-  };
+
   const [showPassword, setShowPassword] = React.useState(false);
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -42,26 +40,30 @@ export const Signup = () => {
   ) => {
     event.preventDefault();
   };
+const onSubmit = async (data: SignUpFormValues) => {
+  try {
+    const response = await fetch("http://localhost:5050/api/user/signup", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      // Only send email and password for now
+      body: JSON.stringify({ email: data.email, password: data.password }),
+    });
 
-  const handleLogin = async () => {
-    try {
-      const response = await fetch("http://localhost:5000/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ username, password }),
-      });
+    const result = await response.json();
 
-      const data = await response.json();
-      if (response.ok) {
-        alert(`Welcome ${data.username}!`);
-      } else {
-        alert(data.message || "Login failed");
-      }
-    } catch (error) {
-      console.error("Error:", error);
-      alert("Server error");
+    if (response.ok) {
+      alert("Sign up successful! You can now log in.");
+      // Optionally redirect to login page
+      
+    } else {
+      alert(result.message || "Signup failed");
     }
-  };
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Server error");
+  }
+};
+
   return (
     <>
       <form
@@ -95,13 +97,13 @@ export const Signup = () => {
         <TextField
           sx={{ mt: 2 }}
           id="outlined-basic"
-          label="Username"
+          label="Email"
           variant="outlined"
           fullWidth
-          {...register("username")}
+          {...register("email")}
         />
-        {errors.username && (
-          <p className="signupError marginP"> {errors.username.message}</p>
+        {errors.email && (
+          <p className="signupError marginP"> {errors.email.message}</p>
         )}
         <FormControl variant="outlined" fullWidth sx={{ mt: 2 }}>
           <InputLabel htmlFor="outlined-adornment-password">
