@@ -5,7 +5,7 @@ import { Todo } from "./Todo";
 import "./Feature.css";
 export default function Feature() {
   const [quote, setQuote] = useState("Loading motivation...");
-
+ const [selectedDate, setSelectedDate] = useState<string | null>(null); 
   const quotes = [
     "Push yourself, because no one else is going to do it for you.",
     "Don’t stop when you’re tired. Stop when you’re done.",
@@ -34,6 +34,12 @@ export default function Feature() {
     setQuote(random); // <-- important! updates state
   }, []); // runs once when component mounts
 
+  const handleDateSelect = (dateStr: string) => {
+    setSelectedDate(dateStr);
+    console.log("Selected date:", dateStr);
+  };
+
+
   return (
     <>
       <div className="container">
@@ -44,7 +50,10 @@ export default function Feature() {
           <Todo></Todo>
         </div>
         <div className="calendar">
-          <Calendar />
+          <Calendar
+            selectedDate={selectedDate}       // <-- pass state
+            onDateSelect={handleDateSelect}   // <-- pass handler
+          />
         </div>
       </div>
     </>

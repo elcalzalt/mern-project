@@ -52,7 +52,6 @@
 
 .calendar {
   grid-area: calendar;
-  background-color: rgb(47, 69, 72);
   border-radius: 10px;
   box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
   max-width: 550px;
@@ -154,5 +153,13 @@
   width: 100%;
 }
 .deleteBtn{
-  padding: 3px;
+  padding: 4px 3px 0 3px;
+  background-color: transparent;
+  color: black;
+
+}
+.deleteBtn:hover{
+  background-color: none;
+  color: white;
+  transform: translateY(-2px);
 }

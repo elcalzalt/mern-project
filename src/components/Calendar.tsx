@@ -1,64 +1,91 @@
-import React from "react";
+
+import React, { useState } from "react";
 import "./Calendar.css";
 
-const CalendarArea = () => {
-  // Current date
-  const today: Date = new Date();
-  const year: number = today.getFullYear();
-  const month: number = today.getMonth();
+type CalendarProps = {
+  selectedDate: string | null;
+  onDateSelect: (dateStr: string) => void;
+};
 
-  // Number of days in current month
-  const daysInMonth: number = new Date(year, month + 1, 0).getDate();
-  // Month names
+const Calendar = ({ selectedDate, onDateSelect }: CalendarProps) => {
+  const today = new Date();
+
+  const [year, setYear] = useState(today.getFullYear());
+  const [month, setMonth] = useState(today.getMonth());
+  const [selectedDay, setSelectedDay] = useState<number | null>(null);
+
   const monthNames = [
-    "January",
-    "February",
-    "March",
-    "April",
-    "May",
-    "June",
-    "July",
-    "August",
-    "September",
-    "October",
-    "November",
-    "December",
+    "January","February","March","April","May","June",
+    "July","August","September","October","November","December"
   ];
 
-  // Weekday headers
-  const weekdays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  // Weekday of the 1st day of the month (0 = Sunday)
+  const weekdays = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
   const firstDayIndex = new Date(year, month, 1).getDay();
-  // Create calendar grid with empty slots before the 1st day
+
   const days: (number | null)[] = [
     ...Array.from({ length: firstDayIndex }, () => null),
     ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
   ];
 
+  // Handle day click
+  const onSelectDay = (day: number | null) => {
+    if (!day) return;
+    setSelectedDay(day);
+
+    // Build YYYY-MM-DD string
+    const dateStr = `${year}-${(month + 1).toString().padStart(2, "0")}-${day.toString().padStart(2, "0")}`;
+    onDateSelect(dateStr);
+  };
+
+  const changeMonth = (offset: number) => {
+    setMonth((prevMonth) => {
+      let newMonth = prevMonth + offset;
+      if (newMonth < 0) {
+        setYear((prev) => prev - 1);
+        newMonth = 11;
+      } else if (newMonth > 11) {
+        setYear((prev) => prev + 1);
+        newMonth = 0;
+      }
+      return newMonth;
+    });
+  };
+
+  const changeYear = (offset: number) => {
+    setYear((prevYear) => prevYear + offset);
+  };
+
   return (
     <div className="calendarWrapper">
-      {/* Header */}
       <div className="calendarHeader">
-        <h2>
-          {monthNames[month]} {year}
-        </h2>
+        <button className="navBtn" onClick={() => changeMonth(-1)}>‹</button>
+        <h2>{monthNames[month]}</h2>
+        <button className="navBtn" onClick={() => changeMonth(1)}>›</button>
+        <button className="navBtn" onClick={() => changeYear(-1)}>«</button>
+        <h2>{year}</h2>
+        <button className="navBtn" onClick={() => changeYear(1)}>»</button>
       </div>
 
-      {/* Weekdays Row */}
       <div className="calendarWeekdays">
         {weekdays.map((day) => (
-          <div key={day} className="calendarWeekday">
-            {day}
-          </div>
+          <div key={day} className="calendarWeekday">{day}</div>
         ))}
       </div>
 
-      {/* Days Grid */}
       <div className="calendarGrid">
         {days.map((day, i) => (
           <div
             key={i}
-            className={`calendarDay ${day === today.getDate() ? "today" : ""}`}
+            className={`calendarDay ${
+              day === today.getDate() &&
+              month === today.getMonth() &&
+              year === today.getFullYear() ? "today" : ""
+            } ${
+              selectedDay === day ? "selectedDay" : ""
+            }`}
+            onClick={() => onSelectDay(day)}
           >
             {day || ""}
           </div>
@@ -67,4 +94,5 @@ const CalendarArea = () => {
     </div>
   );
 };
-export default CalendarArea;
+
+export default Calendar;

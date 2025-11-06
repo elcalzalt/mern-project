@@ -12,7 +12,7 @@ import InputLabel from "@mui/material/InputLabel";
 import NativeSelect from "@mui/material/NativeSelect";
 import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
-
+import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
 type TodoItemProps = {
   text: string;
   onDelete: () => void;
@@ -35,7 +35,7 @@ export const TodoItem = ({ text, onDelete }: TodoItemProps) => {
         </div>
         <div style={{display:"flex", alignItems:"center"}}>
           <Checkbox {...label} />
-           <button onClick={onDelete} className="deleteBtn">❌</button>
+           <button onClick={onDelete} className="deleteBtn"><HighlightOffOutlinedIcon/></button>
         </div>
        
       </div>
