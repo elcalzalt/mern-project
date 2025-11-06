@@ -11,11 +11,13 @@ import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
 import NativeSelect from "@mui/material/NativeSelect";
 import TextField from "@mui/material/TextField";
+import Checkbox from "@mui/material/Checkbox";
 
 type TodoItemProps = {
   text: string;
   onDelete: () => void;
 };
+const label = { slotProps: { input: { 'aria-label': 'Checkbox demo' } } };
 export const TodoItem = ({ text, onDelete }: TodoItemProps) => {
   const [value, setValue] = React.useState<number | null>(2);
   return (
@@ -31,7 +33,11 @@ export const TodoItem = ({ text, onDelete }: TodoItemProps) => {
           }}
         />
         </div>
-        <button onClick={onDelete} className="deleteBtn">❌</button>
+        <div style={{display:"flex", alignItems:"center"}}>
+          <Checkbox {...label} />
+           <button onClick={onDelete} className="deleteBtn">❌</button>
+        </div>
+       
       </div>
       <div className="contentRow">
         <Box
