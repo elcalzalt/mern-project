@@ -31,7 +31,7 @@ const Calendar = ({ selectedDate, onDateSelect }: CalendarProps) => {
 
   // Handle day click
   const onSelectDay = (day: number | null) => {
-    if (!day) return;
+    if (day === null || day === undefined) return;
     setSelectedDay(day);
 
     // Build YYYY-MM-DD string
@@ -83,7 +83,7 @@ const Calendar = ({ selectedDate, onDateSelect }: CalendarProps) => {
               month === today.getMonth() &&
               year === today.getFullYear() ? "today" : ""
             } ${
-              selectedDay === day ? "selectedDay" : ""
+              (selectedDay === day && selectedDay !== null) ? "selectedDay" : ""
             }`}
             onClick={() => onSelectDay(day)}
           >
