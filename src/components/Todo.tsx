@@ -5,7 +5,10 @@ import { styled } from "@mui/material/styles";
 import Rating from "@mui/material/Rating";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-
+type TodoType = {
+  id: number; // unique
+  text: string;
+};
 const StyledRating = styled(Rating)({
   "& .MuiRating-iconFilled": {
     color: "#ff6d75",
@@ -15,10 +18,16 @@ const StyledRating = styled(Rating)({
   },
 });
 export const Todo = () => {
-  const [todos, setTodos] = useState<string[]>([]);
+  const [todos, setTodos] = useState<TodoType[]>([]);
 
   const add = () => {
-    setTodos([...todos, `Exercise ${todos.length + 1}`]);
+    setTodos([
+      ...todos,
+      { id: Date.now(), text: `Exercise ${todos.length + 1}` },
+    ]);
+  };
+  const deleteTodo = (id: number) => {
+    setTodos(todos.filter((todo) => todo.id !== id));
   };
   return (
     <>
@@ -46,8 +55,12 @@ export const Todo = () => {
       </div>
 
       <div className="listBody" id="body">
-        {todos.map((todo: string, index: number) => (
-          <TodoItem key={index} text={todo} />
+        {todos.map((todo, index) => (
+          <TodoItem
+            key={todo.id}
+            text={`Exercise ${index + 1}`}
+            onDelete={() => deleteTodo(todo.id)}
+          />
         ))}
       </div>
     </>
