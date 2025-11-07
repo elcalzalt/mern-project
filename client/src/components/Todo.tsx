@@ -75,7 +75,7 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 export type TodoType = {
-  id: number;
+  id: number ;
   exercise: string;
   text: string;        // exercise name
   weight: string;
@@ -83,11 +83,13 @@ export type TodoType = {
   reps: number;
   rating: number;
   done: boolean;
+  date: string;
 };
 
 type TodoProps = {
   todos: TodoType[];
   onChange: (newTodos: TodoType[]) => void;
+  selectedDate: string;
 };
 
 const StyledRating = styled(Rating)({
@@ -98,28 +100,118 @@ const StyledRating = styled(Rating)({
     color: "#ff3d47",
   },
 });
+const API_BASE = "http://localhost:5050/api/todo"; // adjust port/path if needed
 
-export const Todo = ({ todos, onChange }: TodoProps) => {
-  const add = () => {
-    const newTodo: TodoType = {
-      id: Date.now(),
-      exercise:"",
-      text: "",
-      weight: "",
-      sets: 4,
-      reps: 10,
-      rating: 2,
-      done: false,
-    };
-    onChange([...todos, newTodo]);
+export const Todo = ({ todos, onChange,selectedDate }: TodoProps) => {
+  // const add = () => {
+  //   const newTodo: TodoType = {
+  //     id: Date.now(),
+  //     exercise:"",
+  //     text: "",
+  //     weight: "",
+  //     sets: 4,
+  //     reps: 10,
+  //     rating: 2,
+  //     done: false,
+  //   };
+  //   onChange([...todos, newTodo]);
+  // };
+  const add = async () => {
+  const token = localStorage.getItem("token");
+  if (!token) return;
+
+  // create a local todo first
+  const newTodo: TodoType = {
+    id: Date.now(),
+    exercise: "",
+    text: "New todo",
+    weight: "",
+    sets: 4,
+    reps: 10,
+    rating: 2,
+    done: false,
+    date: selectedDate,     
   };
 
-  const deleteTodo = (id: number) => {
-    onChange(todos.filter((t) => t.id !== id));
-  };
-    const updateTodo = (id: number, updated: TodoType) => {
-    onChange(todos.map((t) => (t.id === id ? updated : t)));
-  };
+  try {
+    // send to backend
+    const res = await fetch(API_BASE, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      //body: JSON.stringify(newTodo),
+      body: JSON.stringify({
+        ...newTodo,
+        date: selectedDate, // ✅ include this field for the backend
+      }),
+    });
+
+    const data = await res.json();
+
+    if (res.ok) {
+      // use backend id if provided
+      const savedTodo: TodoType = {
+        ...newTodo,
+        id: data._id || newTodo.id,
+      };
+
+      // update UI
+      onChange([...todos, savedTodo]);
+    } else {
+      console.error(data.error || "Failed to save todo");
+    }
+  } catch (err) {
+    console.error("Error adding todo:", err);
+  }
+};
+
+  // const deleteTodo = (id: number) => {
+  //   onChange(todos.filter((t) => t.id !== id));
+  // };
+  const deleteTodo = async (id: number) => {
+  const token = localStorage.getItem("token");
+  if (!token) return;
+
+  try {
+    await fetch(`${API_BASE}/${id}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+  } catch (err) {
+    console.error("Error deleting todo:", err);
+  }
+
+  // always remove from UI
+  onChange(todos.filter((t) => t.id !== id));
+};
+
+  //   const updateTodo = (id: number, updated: TodoType) => {
+  //   onChange(todos.map((t) => (t.id === id ? updated : t)));
+  // };
+const updateTodo = async (id: number, updated: TodoType) => {
+  onChange(todos.map((t) => (t.id === id ? updated : t))); // instant local update
+
+  const token = localStorage.getItem("token");
+  if (!token) return;
+
+  try {
+    await fetch(`${API_BASE}/${id}`, {
+      method: "PATCH", // <-- we'll add this route in backend soon if not present
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({
+        ...updated,
+        date: selectedDate, // ✅ ensure correct association in DB
+      }),
+    });
+  } catch (err) {
+    console.error("Error updating todo:", err);
+  }
+};
 
   return (
     <>

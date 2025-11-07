@@ -5,7 +5,7 @@
 // import "./Feature.css";
 // export default function Feature() {
 //   const [quote, setQuote] = useState("Loading motivation...");
-//  const [selectedDate, setSelectedDate] = useState<string | null>(null); 
+//  const [selectedDate, setSelectedDate] = useState<string | null>(null);
 //   const quotes = [
 //     "Push yourself, because no one else is going to do it for you.",
 //     "Don’t stop when you’re tired. Stop when you’re done.",
@@ -72,17 +72,19 @@ import Calendar from "./Calendar";
 import { Todo } from "./Todo";
 import "./Feature.css";
 import { useNavigate } from "react-router-dom";
+import type { TodoType } from "./Todo";
 
-type TodoType = {
-  id: number;
-  exercise: string;
-  text: string;        // exercise name
-  weight: string;
-  sets: number;
-  reps: number;
-  rating: number;
-  done: boolean;
-};
+// type TodoType = {
+//   id: number;
+//   exercise: string;
+//   text: string; // exercise name
+//   weight: string;
+//   sets: number;
+//   reps: number;
+//   rating: number;
+//   done: boolean;
+//   date?: string;
+// };
 
 type TodosByDate = {
   [date: string]: TodoType[];
@@ -105,9 +107,39 @@ export default function Feature() {
     const random = quotes[Math.floor(Math.random() * quotes.length)];
     setQuote(random);
   }, []);
-
-  const handleDateSelect = (dateStr: string) => {
+  const API_BASE = "http://localhost:5050/api/todo";
+  const handleDateSelect = async (dateStr: string) => {
     setSelectedDate(dateStr);
+
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    try {
+      const res = await fetch(`${API_BASE}/${encodeURIComponent(dateStr)}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+      if (res.ok) {
+        setTodosByDate((prev) => ({
+          ...prev,
+          [dateStr]: data.map((t: any) => ({
+            id: t._id, // backend uses _id
+            text: t.text,
+            exercise: t.exercise,
+            weight: t.weight,
+            sets: t.sets,
+            reps: t.reps,
+            rating: t.rating,
+            done: t.checked,
+            date: t.date,
+          })),
+        }));
+      } else {
+        console.error(data.error);
+      }
+    } catch (err) {
+      console.error("Failed to fetch todos:", err);
+    }
   };
 
   const handleLogout = () => {
@@ -138,6 +170,7 @@ export default function Feature() {
           <Todo
             todos={todosByDate[selectedDate] || []}
             onChange={(newTodos) => updateTodosForDate(selectedDate, newTodos)}
+            selectedDate={selectedDate}
           />
         ) : (
           <p>Please select a date from the calendar.</p>
@@ -145,10 +178,7 @@ export default function Feature() {
       </div>
 
       <div className="calendar">
-        <Calendar
-          selectedDate={selectedDate}
-          onDateSelect={handleDateSelect}
-        />
+        <Calendar selectedDate={selectedDate} onDateSelect={handleDateSelect} />
       </div>
     </div>
   );
