@@ -3,66 +3,102 @@ import TextField from "@mui/material/TextField";
 import Autocomplete, { createFilterOptions } from "@mui/material/Autocomplete";
 
 const filter = createFilterOptions<ExerciseOptionType>();
+type ExerciseListProps = {
+  value: string;
+  onChange: (newValue: string) => void;
+};
 
-export default function FreeSoloCreateOption() {
-  const [value, setValue] = React.useState<ExerciseOptionType | null>(null);
+export default function ExerciseList({ value, onChange }: ExerciseListProps) {
+  const [options, setOptions] = React.useState<ExerciseOptionType[]>(top100Exercises);
+  const [internalValue, setInternalValue] = React.useState<ExerciseOptionType | null>(
+    value ? { name: value } : null
+  );
 
-  // Use state for options so we can add new exercises dynamically
-  const [options, setOptions] =
-    React.useState<ExerciseOptionType[]>(top100Exercises);
+  React.useEffect(() => {
+    setInternalValue(value ? { name: value } : null);
+  }, [value]);
 
   return (
     <Autocomplete
-      value={value}
+      value={internalValue}
       onChange={(_, newValue) => {
-        if (typeof newValue === "string") {
-          const newOption = { name: newValue };
-          setValue(newOption);
-          setOptions((prev) => [...prev, newOption]); // add to options
-        } else if (newValue && newValue.inputValue) {
-          const newOption = { name: newValue.inputValue };
-          setValue(newOption);
-          setOptions((prev) => [...prev, newOption]); // add to options
-        } else {
-          setValue(newValue);
-        }
+        let name = "";
+        if (typeof newValue === "string") name = newValue;
+        else if (newValue?.inputValue) name = newValue.inputValue;
+        else if (newValue) name = newValue.name;
+
+        onChange(name);
+        setInternalValue({ name });
+        if (!options.some((o) => o.name === name)) setOptions([...options, { name }]);
       }}
-      filterOptions={(options, params) => {
-        const filtered = filter(options, params);
-        const { inputValue } = params;
-        const isExisting = options.some((option) => inputValue === option.name);
-        if (inputValue !== "" && !isExisting) {
-          filtered.push({
-            inputValue,
-            name: `Add "${inputValue}"`,
-          });
-        }
-        return filtered;
-      }}
-      selectOnFocus
-      clearOnBlur
-      handleHomeEndKeys
-      id="free-solo-with-text-demo"
-      options={options} // <-- use state array
-      getOptionLabel={(option) => {
-        if (typeof option === "string") return option;
-        if (option.inputValue) return option.inputValue;
-        return option.name;
-      }}
-      renderOption={(props, option) => {
-        const { key, ...optionProps } = props;
-        return (
-          <li key={key} {...optionProps}>
-            {option.name}
-          </li>
-        );
-      }}
+      options={options}
+      getOptionLabel={(option) => (typeof option === "string" ? option : option.name)}
+      renderInput={(params) => <TextField {...params} label="Exercise name" />}
       sx={{ width: "40%" }}
       freeSolo
-      renderInput={(params) => <TextField {...params} label="Exercise name" />}
     />
   );
 }
+
+// export default function FreeSoloCreateOption() {
+//   const [value, setValue] = React.useState<ExerciseOptionType | null>(null);
+
+//   // Use state for options so we can add new exercises dynamically
+//   const [options, setOptions] =
+//     React.useState<ExerciseOptionType[]>(top100Exercises);
+
+//   return (
+//     <Autocomplete
+//       value={value}
+//       onChange={(_, newValue) => {
+//         if (typeof newValue === "string") {
+//           const newOption = { name: newValue };
+//           setValue(newOption);
+//           setOptions((prev) => [...prev, newOption]); // add to options
+//         } else if (newValue && newValue.inputValue) {
+//           const newOption = { name: newValue.inputValue };
+//           setValue(newOption);
+//           setOptions((prev) => [...prev, newOption]); // add to options
+//         } else {
+//           setValue(newValue);
+//         }
+//       }}
+//       filterOptions={(options, params) => {
+//         const filtered = filter(options, params);
+//         const { inputValue } = params;
+//         const isExisting = options.some((option) => inputValue === option.name);
+//         if (inputValue !== "" && !isExisting) {
+//           filtered.push({
+//             inputValue,
+//             name: `Add "${inputValue}"`,
+//           });
+//         }
+//         return filtered;
+//       }}
+//       selectOnFocus
+//       clearOnBlur
+//       handleHomeEndKeys
+//       id="free-solo-with-text-demo"
+//       options={options} // <-- use state array
+//       getOptionLabel={(option) => {
+//         if (typeof option === "string") return option;
+//         if (option.inputValue) return option.inputValue;
+//         return option.name;
+//       }}
+//       renderOption={(props, option) => {
+//         const { key, ...optionProps } = props;
+//         return (
+//           <li key={key} {...optionProps}>
+//             {option.name}
+//           </li>
+//         );
+//       }}
+//       sx={{ width: "40%" }}
+//       freeSolo
+//       renderInput={(params) => <TextField {...params} label="Exercise name" />}
+//     />
+//   );
+// }
 
 interface ExerciseOptionType {
   inputValue?: string;
