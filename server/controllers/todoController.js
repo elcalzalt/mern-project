@@ -107,5 +107,17 @@ const updateTodo = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+const getAllTodos = async (req, res) => {
+  if (!req.user || !req.user._id) {
+    return res.status(401).json({ error: "Authentication required" });
+  }
 
-export default { createTodo, deleteTodo, getTodosByDate,updateTodo  };
+  try {
+    const todos = await Todo.find({ user: req.user._id }).sort({ date: 1 });
+    res.status(200).json(todos);
+  } catch (err) {
+    res.status(400).json({ error: err.message });
+  }
+};
+
+export default { createTodo, deleteTodo, getTodosByDate,updateTodo,getAllTodos  };

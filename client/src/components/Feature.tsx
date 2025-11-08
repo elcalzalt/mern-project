@@ -102,12 +102,58 @@ export default function Feature() {
     "Great things never come from comfort zones.",
     "Success doesn’t just find you. You have to go out and get it.",
   ];
+   const API_BASE = "http://localhost:5050/api/todo";
+  useEffect(() => {
+  const fetchAllTodos = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) return;
+
+    try {
+      const res = await fetch(`${API_BASE}/all`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+      const data = await res.json();
+       console.log("Fetched todos:", data);
+      if (res.ok) {
+        const grouped: TodosByDate = {};
+        for (const t of data) {
+          const date = t.date;
+          if (!grouped[date]) grouped[date] = [];
+          grouped[date].push({
+            id: t._id,
+            text: t.text,
+            exercise: t.exercise,
+            weight: t.weight,
+            sets: t.sets,
+            reps: t.reps,
+            rating: t.rating,
+            done: t.checked,
+            date: t.date,
+          });
+        }
+        setTodosByDate(grouped);
+        if (grouped) {
+  // optionally set selectedDay to today to trigger color
+  const today = new Date();
+  const todayStr = `${today.getFullYear()}-${String(today.getMonth()+1).padStart(2,'0')}-${String(today.getDate()).padStart(2,'0')}`;
+  setSelectedDate(todayStr);
+}
+      } else {
+        console.error(data.error);
+      }
+    } catch (err) {
+      console.error("Failed to fetch all todos:", err);
+    }
+  };
+
+  fetchAllTodos();
+}, []);
 
   useEffect(() => {
     const random = quotes[Math.floor(Math.random() * quotes.length)];
     setQuote(random);
   }, []);
-  const API_BASE = "http://localhost:5050/api/todo";
+ 
   const handleDateSelect = async (dateStr: string) => {
     setSelectedDate(dateStr);
 
@@ -178,7 +224,7 @@ export default function Feature() {
       </div>
 
       <div className="calendar">
-        <Calendar selectedDate={selectedDate} onDateSelect={handleDateSelect} />
+        <Calendar selectedDate={selectedDate} onDateSelect={handleDateSelect}  todosByDate={todosByDate}/>
       </div>
     </div>
   );

@@ -49,8 +49,10 @@
 
 .today {
   background-color: #ffc107;
+  border: 3px solid rgba(234,108,54);
   color: black;
   font-weight: bold;
+  z-index: 2;
 }
 .navBtn{
   border: 0;
@@ -62,4 +64,19 @@
 .calendarDay.selectedDay {
   background-color: #4caf50; /* or whatever color */
   color: white;
+}
+
+.calendarDay.hasTodos {
+  background-color: #6eb2cc; /* light green */
+  color: white;
+}
+
+.calendarDay.hasTodos:hover {
+  background-color: #558da3; /* darker green on hover */
+}
+.hasTodo {
+  background-color: #ffe066; /* yellow highlight */
+  border-radius: 50%;
+  color: black;
+  font-weight: bold;
 }
