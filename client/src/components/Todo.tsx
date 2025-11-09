@@ -245,7 +245,7 @@ const updateTodo = async (id: number, updated: TodoType) => {
         </div>
 
         <div className="hpCheck">
-          {/* <span>HP remaining after training: </span> */}
+          <span>Stay consistent. Stay strong. Every rep counts  <FavoriteIcon fontSize="inherit" sx={{ color: '#ff6d75' }}/></span>
           {/* <StyledRating
             name="customized-color"
             defaultValue={2}
