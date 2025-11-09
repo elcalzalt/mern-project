@@ -40,3 +40,22 @@
 .marginP{
   margin-top: 5px;
 }
+
+.passwordRequirements {
+  color: red;
+  font-size: 12px;
+}
+
+.passwordRequirements li {
+  display: list-item !important; 
+  color: gray;
+}
+
+.passwordRequirements .valid {
+  color: green;
+}
+
+.passwordRequirements .invalid {
+  color: red;
+}
+

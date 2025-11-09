@@ -182,7 +182,7 @@ export const TodoItem = ({ todo, onUpdate, onDelete }: TodoItemProps) => {
               value={todo.reps}
               onChange={(e) => onUpdate({ ...todo, reps: parseInt(e.target.value) })}
             >
-              {Array.from({ length: 24 }, (_, i) => (
+              {Array.from({ length: 100 }, (_, i) => (
                 <option key={i + 1} value={i + 1}>
                   {i + 1}
                 </option>
