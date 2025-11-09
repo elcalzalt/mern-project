@@ -49,18 +49,15 @@ export const Signup = () => {
 	};
 	const onSubmit = async (data: SignUpFormValues) => {
 		try {
-			const response = await fetch(
-				"http://localhost:5050/api/user/signup",
-				{
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					// Only send email and password for now
-					body: JSON.stringify({
-						email: data.email,
-						password: data.password,
-					}),
-				}
-			);
+			const response = await fetch(`${API_BASE_URL}/api/user/signup`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				// Only send email and password for now
+				body: JSON.stringify({
+					email: data.email,
+					password: data.password,
+				}),
+			});
 
 			const result = await response.json();
 
