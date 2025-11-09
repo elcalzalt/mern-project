@@ -20,7 +20,13 @@ const signUpSchema = z.object({
 	lastname: z.string().min(1, "At least 1 character for lastname"),
 	//username: z.string().min(3, "At least 3 character for username"),
 	email: z.email("Please enter valid email"),
-	password: z.string().min(6, "At least 6 character for password"),
+	password: z
+		.string()
+		.min(8, "Enter a valild password")
+		.regex(/[a-z]/, "At least one lowercase letter")
+		.regex(/[A-Z]/, "At least one uppercase letter")
+		.regex(/[0-9]/, "At least one number")
+		.regex(/[^A-Za-z0-9]/, "At least one special character"),
 });
 type SignUpFormValues = z.infer<typeof signUpSchema>;
 export const Signup = () => {
@@ -31,7 +37,7 @@ export const Signup = () => {
 	} = useForm<SignUpFormValues>({
 		resolver: zodResolver(signUpSchema),
 	});
-
+	const [showRequirements, setShowRequirements] = useState(false);
 	const [showPassword, setShowPassword] = React.useState(false);
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
@@ -43,15 +49,18 @@ export const Signup = () => {
 	};
 	const onSubmit = async (data: SignUpFormValues) => {
 		try {
-			const response = await fetch(`${API_BASE_URL}/api/user/signup`, {
-				method: "POST",
-				headers: { "Content-Type": "application/json" },
-				// Only send email and password for now
-				body: JSON.stringify({
-					email: data.email,
-					password: data.password,
-				}),
-			});
+			const response = await fetch(
+				"http://localhost:5050/api/user/signup",
+				{
+					method: "POST",
+					headers: { "Content-Type": "application/json" },
+					// Only send email and password for now
+					body: JSON.stringify({
+						email: data.email,
+						password: data.password,
+					}),
+				}
+			);
 
 			const result = await response.json();
 
@@ -124,7 +133,15 @@ export const Signup = () => {
 					<OutlinedInput
 						id="outlined-adornment-password"
 						type={showPassword ? "text" : "password"}
-						{...register("password")}
+						{...register("password", {
+							onChange: (e) => setPassword(e.target.value), // keeps live requirement check
+							onBlur: (e) => {
+								if (!isSubmitting) {
+									setShowRequirements(false); // only hide when not submitting
+								}
+							}, // keeps hide-on-blur
+						})}
+						onFocus={() => setShowRequirements(true)}
 						endAdornment={
 							<InputAdornment position="end">
 								<IconButton
@@ -144,6 +161,47 @@ export const Signup = () => {
 						label="Password"
 					/>
 				</FormControl>
+				{showRequirements && (
+					<ul className="passwordRequirements marginP">
+						<li
+							className={
+								password.length >= 8 ? "valid" : "invalid"
+							}
+						>
+							At least 8 characters
+						</li>
+						<li
+							className={
+								/[a-z]/.test(password) ? "valid" : "invalid"
+							}
+						>
+							At least one lowercase letter
+						</li>
+						<li
+							className={
+								/[A-Z]/.test(password) ? "valid" : "invalid"
+							}
+						>
+							At least one uppercase letter
+						</li>
+						<li
+							className={
+								/[0-9]/.test(password) ? "valid" : "invalid"
+							}
+						>
+							At least one number
+						</li>
+						<li
+							className={
+								/[^A-Za-z0-9]/.test(password)
+									? "valid"
+									: "invalid"
+							}
+						>
+							At least one special character
+						</li>
+					</ul>
+				)}
 				{errors.password && (
 					<p className="signupError marginP">
 						{" "}

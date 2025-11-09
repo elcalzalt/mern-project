@@ -136,6 +136,9 @@
   .mainBoardLeft {
     width: 100%;
   }
+  .mainBoard{
+    height: 600px;
+  }
   .main{
     justify-content: start;
   }
