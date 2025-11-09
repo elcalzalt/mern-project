@@ -14,6 +14,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "@mui/material/Button";
+import { API_BASE_URL } from "../config";
 const signUpSchema = z.object({
 	firstname: z.string().min(1, "At least 1 character for firstname"),
 	lastname: z.string().min(1, "At least 1 character for lastname"),
@@ -42,18 +43,15 @@ export const Signup = () => {
 	};
 	const onSubmit = async (data: SignUpFormValues) => {
 		try {
-			const response = await fetch(
-				"http://localhost:5050/api/user/signup",
-				{
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					// Only send email and password for now
-					body: JSON.stringify({
-						email: data.email,
-						password: data.password,
-					}),
-				}
-			);
+			const response = await fetch(`${API_BASE_URL}/api/user/signup`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				// Only send email and password for now
+				body: JSON.stringify({
+					email: data.email,
+					password: data.password,
+				}),
+			});
 
 			const result = await response.json();
 

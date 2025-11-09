@@ -6,7 +6,7 @@ import todoRoutes from "./routes/todo.js";
 import dotenv from "dotenv";
 
 dotenv.config();
-const PORT = process.env.PORT || 5050;
+const BACKEND_PORT = process.env.BACKEND_PORT || 5050;
 const app = express();
 
 app.use(express.json());
@@ -19,8 +19,8 @@ const URI = process.env.ATLAS_URI || "";
 mongoose
 	.connect(URI)
 	.then(() => {
-		app.listen(PORT, () => {
-			console.log(`Server listening on port ${PORT}`);
+		app.listen(BACKEND_PORT, () => {
+			console.log(`Server listening on port ${BACKEND_PORT}`);
 		});
 	})
 	.catch((err) => {

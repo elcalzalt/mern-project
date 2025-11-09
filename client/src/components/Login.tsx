@@ -14,6 +14,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Button from "@mui/material/Button";
+import { API_BASE_URL } from "../config";
 const signInSchema = z.object({
 	email: z.email("Please enter valid email"),
 	password: z.string().min(6, "At least 6 character for password"),
@@ -45,14 +46,11 @@ export const Login = () => {
 	const navigate = useNavigate();
 	const handleLogin = async (email: string, password: string) => {
 		try {
-			const response = await fetch(
-				"http://localhost:5050/api/user/login",
-				{
-					method: "POST",
-					headers: { "Content-Type": "application/json" },
-					body: JSON.stringify({ email, password }),
-				}
-			);
+			const response = await fetch(`${API_BASE_URL}/api/user/login`, {
+				method: "POST",
+				headers: { "Content-Type": "application/json" },
+				body: JSON.stringify({ email, password }),
+			});
 
 			const data = await response.json();
 

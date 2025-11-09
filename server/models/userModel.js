@@ -1,20 +1,32 @@
 import mongoose from "mongoose";
 import bcrypt from "bcrypt";
 import validator from "validator";
+import crypto from "crypto";
 
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema({
-	email: {
-		type: String,
-		required: true,
-		unique: true,
+const userSchema = new Schema(
+	{
+		email: {
+			type: String,
+			required: true,
+			unique: true,
+		},
+		password: {
+			type: String,
+			required: true,
+		},
+		isVerified: {
+			type: Boolean,
+			default: false,
+		},
+		verificationToken: String,
+		verificationTokenExpires: Date,
+		passwordResetToken: String,
+		passwordResetExpires: Date,
 	},
-	password: {
-		type: String,
-		required: true,
-	},
-});
+	{ timestamps: true }
+);
 
 userSchema.statics.signup = async function (email, password) {
 	if (!email || !password) {
@@ -53,10 +65,42 @@ userSchema.statics.login = async function (email, password) {
 	const match = await bcrypt.compare(password, user.password);
 
 	if (!match) {
-		throw Error("wrong email or password");
+		throw Error("Invalid email or password");
+	}
+
+	if (!user.isVerified) {
+		throw Error("Please verify your email before logging in.");
 	}
 
 	return user;
+};
+
+userSchema.methods.generateEmailVerificationToken = function () {
+	const rawToken = crypto.randomBytes(32).toString("hex");
+	this.verificationToken = crypto
+		.createHash("sha256")
+		.update(rawToken)
+		.digest("hex");
+	this.verificationTokenExpires = Date.now() + 1000 * 60 * 60 * 24; // 24 hours
+	return rawToken;
+};
+
+userSchema.methods.generatePasswordResetToken = function () {
+	const rawToken = crypto.randomBytes(32).toString("hex");
+	this.passwordResetToken = crypto
+		.createHash("sha256")
+		.update(rawToken)
+		.digest("hex");
+	this.passwordResetExpires = Date.now() + 1000 * 60 * 60; // 1 hour
+	return rawToken;
+};
+
+userSchema.methods.setPassword = async function (password) {
+	if (!validator.isStrongPassword(password)) {
+		throw Error("Password not strong enough");
+	}
+	const salt = await bcrypt.genSalt(10);
+	this.password = await bcrypt.hash(password, salt);
 };
 
 export default mongoose.model("User", userSchema);
