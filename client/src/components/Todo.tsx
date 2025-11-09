@@ -245,7 +245,7 @@ const updateTodo = async (id: number, updated: TodoType) => {
         </div>
 
         <div className="hpCheck">
-          <span>HP remaining after training: </span>
+          {/* <span>HP remaining after training: </span> */}
           {/* <StyledRating
             name="customized-color"
             defaultValue={2}
