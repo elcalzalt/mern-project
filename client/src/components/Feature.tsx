@@ -71,7 +71,6 @@ import React, { useEffect, useState } from "react";
 import Calendar from "./Calendar";
 import { Todo } from "./Todo";
 import "./Feature.css";
-import { useNavigate } from "react-router-dom";
 import type { TodoType } from "./Todo";
 
 // type TodoType = {
@@ -94,7 +93,8 @@ export default function Feature() {
   const [quote, setQuote] = useState("Loading motivation...");
   const [selectedDate, setSelectedDate] = useState<string | null>(null);
   const [todosByDate, setTodosByDate] = useState<TodosByDate>({});
-  const navigate = useNavigate();
+  const [hpByDate, setHpByDate] = useState<{ [date: string]: number }>({});
+
 
   const quotes = [
     "Push yourself, because no one else is going to do it for you.",
@@ -180,18 +180,19 @@ export default function Feature() {
             date: t.date,
           })),
         }));
+        // ✅ Save HP value (if backend includes hpRemaining)
+setHpByDate((prev) => ({ ...prev, [dateStr]: data.hpRemaining ?? 2 }));
+
       } else {
         console.error(data.error);
       }
+      
     } catch (err) {
       console.error("Failed to fetch todos:", err);
     }
   };
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/");
-  };
+
 
   // Add or delete todos for specific date
   const updateTodosForDate = (date: string, newTodos: TodoType[]) => {
@@ -207,17 +208,20 @@ export default function Feature() {
         <span>"{quote}"</span>
       </div>
 
-      <button className="logoutBtn" onClick={handleLogout}>
-        Logout
-      </button>
+      
 
       <div className="todo">
         {selectedDate ? (
           <Todo
-            todos={todosByDate[selectedDate] || []}
-            onChange={(newTodos) => updateTodosForDate(selectedDate, newTodos)}
-            selectedDate={selectedDate}
-          />
+  todos={todosByDate[selectedDate] || []}
+  onChange={(newTodos) => updateTodosForDate(selectedDate, newTodos)}
+  selectedDate={selectedDate}
+  hpRemaining={hpByDate[selectedDate] ?? 2}
+  setHpRemaining={(newValue) =>
+    setHpByDate((prev) => ({ ...prev, [selectedDate]: newValue??2 }))
+  }
+/>
+
         ) : (
           <p>Please select a date from the calendar.</p>
         )}

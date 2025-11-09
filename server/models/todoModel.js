@@ -41,6 +41,7 @@ const todoSchema = new Schema(
 			ref: "User",
 			required: true,
 		},
+		hpRemaining: { type: Number, default: 2 },
 	},
 	{ timestamps: true }
 );

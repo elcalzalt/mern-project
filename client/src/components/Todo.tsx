@@ -73,7 +73,7 @@ import { styled } from "@mui/material/styles";
 import Rating from "@mui/material/Rating";
 import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-
+import { useNavigate } from "react-router-dom";
 export type TodoType = {
   id: number ;
   exercise: string;
@@ -90,6 +90,8 @@ type TodoProps = {
   todos: TodoType[];
   onChange: (newTodos: TodoType[]) => void;
   selectedDate: string;
+  hpRemaining: number; // value passed from Feature
+  setHpRemaining: (value: number | null) => void;
 };
 
 const StyledRating = styled(Rating)({
@@ -102,7 +104,7 @@ const StyledRating = styled(Rating)({
 });
 const API_BASE = "http://localhost:5050/api/todo"; // adjust port/path if needed
 
-export const Todo = ({ todos, onChange,selectedDate }: TodoProps) => {
+export const Todo = ({ todos, onChange,selectedDate,hpRemaining,setHpRemaining }: TodoProps) => {
   // const add = () => {
   //   const newTodo: TodoType = {
   //     id: Date.now(),
@@ -116,6 +118,24 @@ export const Todo = ({ todos, onChange,selectedDate }: TodoProps) => {
   //   };
   //   onChange([...todos, newTodo]);
   // };
+const saveHpToBackend = async (newValue: number | null) => {
+  const token = localStorage.getItem("token");
+  if (!token || newValue == null) return;
+
+  await fetch(`${API_BASE}/hp/${selectedDate}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ hpRemaining: newValue }),
+  });
+};
+  const navigate = useNavigate();
+   const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/");
+  };
   const add = async () => {
   const token = localStorage.getItem("token");
   if (!token) return;
@@ -128,7 +148,7 @@ export const Todo = ({ todos, onChange,selectedDate }: TodoProps) => {
     weight: "",
     sets: 4,
     reps: 10,
-    rating: 2,
+    rating: 0,
     done: false,
     date: selectedDate,     
   };
@@ -172,6 +192,8 @@ export const Todo = ({ todos, onChange,selectedDate }: TodoProps) => {
   // };
   const deleteTodo = async (id: number) => {
   const token = localStorage.getItem("token");
+  
+
   if (!token) return;
 
   try {
@@ -219,18 +241,30 @@ const updateTodo = async (id: number, updated: TodoType) => {
         <div className="todoBtnWrap">
           <button className="todoBtn" onClick={add}>Add</button>
           <button className="todoBtn">Share</button>
-          <button className="todoBtn">Compare</button>
+          <button className="todoBtn"  onClick={handleLogout}>Logout</button>
         </div>
 
         <div className="hpCheck">
           <span>HP remaining after training: </span>
-          <StyledRating
+          {/* <StyledRating
             name="customized-color"
             defaultValue={2}
             precision={0.5}
             icon={<FavoriteIcon fontSize="inherit" />}
             emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
-          />
+          /> */}
+          <StyledRating
+  name="hp-remaining"
+  value={hpRemaining}
+  onChange={(_, newValue) => {
+    setHpRemaining(newValue);
+    saveHpToBackend(newValue); // optional step 2
+  }}
+  precision={0.5}
+  icon={<FavoriteIcon fontSize="inherit" />}
+  emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
+/>
+
         </div>
       </div>
 

@@ -5,7 +5,7 @@
     rgb(234, 108, 54)
   );
   min-width: calc(100vw);
-  min-height: 98vh;
+  min-height: 100vh;
   display: grid;
   padding: 15px 50px;
   grid-template-columns: 1.4fr 0.8fr 1fr;
@@ -128,9 +128,13 @@
   border-radius: 0;
 }
 .todoBtn:nth-child(3){
+  background-color: rgba(234,108,54);
   border-bottom-left-radius: 0;
   border-top-left-radius: 0;
 }      
+.todoBtn:nth-child(3):hover{
+  background-color: rgba(154,81,49);
+}
 .todoItem{
   color: black;
   margin-top: 15px;

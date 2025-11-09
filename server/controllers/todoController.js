@@ -78,6 +78,10 @@ const getTodosByDate = async (req, res) => {
 	try {
 		const date = decodeURIComponent(rawDate);
 		const todos = await Todo.find({ user: req.user._id, date }).sort({ createdAt: 1 });
+		let hpRemaining = 2;
+    if (todos.length > 0 && todos[0].hpRemaining !== undefined) {
+      hpRemaining = todos[0].hpRemaining;
+    }
 		res.status(200).json(todos);
 	} catch (err) {
 		res.status(400).json({ error: err.message });
@@ -119,5 +123,23 @@ const getAllTodos = async (req, res) => {
     res.status(400).json({ error: err.message });
   }
 };
+// PATCH /api/todo/hp/:date
+const updateHpByDate = async (req, res) => {
+  const { date } = req.params;
+  const { hpRemaining } = req.body;
 
-export default { createTodo, deleteTodo, getTodosByDate,updateTodo,getAllTodos  };
+  try {
+    // Update all todos for this user and date with the same HP value
+    await Todo.updateMany(
+      { user: req.user._id, date },
+      { $set: { hpRemaining } }
+    );
+
+    res.json({ success: true, hpRemaining });
+  } catch (error) {
+    console.error("Error updating HP rating:", error);
+    res.status(500).json({ error: "Failed to update HP rating" });
+  }
+};
+
+export default { createTodo, deleteTodo, getTodosByDate,updateTodo,getAllTodos,updateHpByDate  };

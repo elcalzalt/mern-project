@@ -31,6 +31,18 @@ export default function ExerciseList({ value, onChange }: ExerciseListProps) {
         setInternalValue({ name });
         if (!options.some((o) => o.name === name)) setOptions([...options, { name }]);
       }}
+      filterOptions={(options, params) => {
+        const filtered = filter(options, params);
+        const { inputValue } = params;
+        const isExisting = options.some((option) => inputValue === option.name);
+        if (inputValue !== "" && !isExisting) {
+          filtered.push({
+            inputValue,
+            name: `Add "${inputValue}"`,
+          });
+        }
+        return filtered;
+      }}
       options={options}
       getOptionLabel={(option) => (typeof option === "string" ? option : option.name)}
       renderInput={(params) => <TextField {...params} label="Exercise name" />}

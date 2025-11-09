@@ -49,7 +49,7 @@
 
 .today {
   background-color: #ffc107;
-  border: 3px solid rgba(234,108,54);
+  outline: 3px solid rgba(234,108,54);
   color: black;
   font-weight: bold;
   z-index: 2;
@@ -63,6 +63,7 @@
 }
 .calendarDay.selectedDay {
   background-color: #4caf50; /* or whatever color */
+  outline: 3px solid #378739;
   color: white;
 }
 

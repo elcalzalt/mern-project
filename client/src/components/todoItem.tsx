@@ -129,11 +129,7 @@ export const TodoItem = ({ todo, onUpdate, onDelete }: TodoItemProps) => {
           />
         </div>
         <div style={{ display: "flex", alignItems: "center" }}>
-          <Checkbox
-            {...label}
-            checked={todo.done}
-            onChange={(e) => onUpdate({ ...todo, done: e.target.checked })}
-          />
+          
           <button onClick={onDelete} className="deleteBtn">
             <HighlightOffOutlinedIcon />
           </button>
@@ -155,7 +151,7 @@ export const TodoItem = ({ todo, onUpdate, onDelete }: TodoItemProps) => {
 />
           <TextField
             id="outlined-basic"
-            label="Weights"
+            label="lbs"
             variant="outlined"
             sx={{ width: "21%" }}
             value={todo.weight}

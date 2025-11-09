@@ -10,10 +10,7 @@ function App() {
     <>
       <Toaster richColors />
       <Router>
-        <nav>
-          {/* Link replaces <a> for client-side routing */}
-          <Link to="/">Home</Link> | <Link to="/feature">Feature</Link>
-        </nav>
+        
 
         <Routes>
           <Route
