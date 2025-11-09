@@ -17,9 +17,9 @@ function App() {
           <Route
             path="/feature"
             element={
-              <ProtectedRoute>
+              
                 <Feature />
-              </ProtectedRoute>
+              
             }
           />
 

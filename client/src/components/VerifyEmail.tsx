@@ -21,7 +21,7 @@ const VerifyEmail = () => {
         }
         setStatus("success");
         // Redirect after short delay
-        setTimeout(() => navigate("/feature"), 1000);
+        setTimeout(() => navigate("/"), 1000);
       })
       .catch((err) => {
         console.error("Verification failed:", err.response?.data || err.message);

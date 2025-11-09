@@ -77,10 +77,10 @@ userSchema.statics.login = async function (email, password) {
 
 userSchema.methods.generateEmailVerificationToken = function () {
 	const rawToken = crypto.randomBytes(32).toString("hex");
-	// this.verificationToken = crypto
-	// 	.createHash("sha256")
-	// 	.update(rawToken)
-	// 	.digest("hex");
+	this.verificationToken = crypto
+		.createHash("sha256")
+		.update(rawToken)
+		.digest("hex");
 	this.verificationToken = rawToken;
 	this.verificationTokenExpires = Date.now() + 1000 * 60 * 60 * 24; // 24 hours
 	return rawToken;
