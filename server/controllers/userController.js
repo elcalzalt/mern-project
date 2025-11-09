@@ -85,7 +85,7 @@ const verifyEmail = async (req, res) => {
 			.digest("hex");
 
 		const user = await User.findOne({
-			verificationToken: hashedToken,
+			verificationToken: token, //hashedToken
 			verificationTokenExpires: { $gt: Date.now() },
 		});
 
