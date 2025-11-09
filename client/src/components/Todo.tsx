@@ -253,7 +253,7 @@ const updateTodo = async (id: number, updated: TodoType) => {
             icon={<FavoriteIcon fontSize="inherit" />}
             emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
           /> */}
-          <StyledRating
+          {/* <StyledRating
   name="hp-remaining"
   value={hpRemaining}
   onChange={(_, newValue) => {
@@ -263,7 +263,7 @@ const updateTodo = async (id: number, updated: TodoType) => {
   precision={0.5}
   icon={<FavoriteIcon fontSize="inherit" />}
   emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
-/>
+/> */}
 
         </div>
       </div>
