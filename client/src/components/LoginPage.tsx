@@ -39,7 +39,7 @@ export const LoginPage = () => {
                 : "Already a member? Sign in"}
             </p>
             <p className="passwordReset">
-  <Link to="/forgot-password">Reset your password here</Link>
+  <Link className="passwordReset" to="/forgot-password">Forgot your password? Click here</Link>
 </p>
           </section>
           <section className="mainBoardRight">

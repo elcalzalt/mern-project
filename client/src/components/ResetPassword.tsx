@@ -1,8 +1,9 @@
 import { useState } from "react";
-import type {FormEvent, ChangeEvent } from "react";
+import type { FormEvent, ChangeEvent } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
-
+import "./PasswordReset.css";
+import TextField from "@mui/material/TextField";
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
   const navigate = useNavigate();
@@ -14,7 +15,10 @@ const ResetPassword = () => {
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const res = await axios.post("http://localhost:5050/api/user/reset-password", { token, password });
+      const res = await axios.post(
+        "http://localhost:5050/api/user/reset-password",
+        { token, password }
+      );
       setMessage(res.data.message);
       setTimeout(() => navigate("/"), 2000);
     } catch (err) {
@@ -25,18 +29,23 @@ const ResetPassword = () => {
 
   return (
     <div className="auth-container">
-      <h2>Reset Password</h2>
-      <form onSubmit={handleSubmit}>
-        <input
-          type="password"
-          placeholder="Enter new password"
-          value={password}
-          onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
-          required
-        />
-        <button type="submit">Reset Password</button>
-      </form>
-      {message && <p>{message}</p>}
+      <div className="content">
+        <h2>Reset Password</h2>
+        <form onSubmit={handleSubmit}  style ={{display:"flex", gap:"10px", flexDirection:"column",width:"100%", alignItems:"center"}}>
+          <TextField
+            type="password"
+            placeholder="Enter new password"
+            value={password}
+            sx={{width:"70%"}}
+            onChange={(e: ChangeEvent<HTMLInputElement>) =>
+              setPassword(e.target.value)
+            }
+            required
+          />
+          <button type="submit" style={{width:"30%", minWidth:"200px"}}>Reset Password</button>
+        </form>
+        {message && <p style={{fontSize: "20px", fontWeight: "500", color:"red"}}>{message}</p>}
+      </div>
     </div>
   );
 };

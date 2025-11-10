@@ -3,7 +3,7 @@ import { LoginPage } from "./components/LoginPage";
 import ProtectedRoute from "./components/ProtectedRoute";
 import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Feature from "./components/Feature";
-import VerifyEmail from "./components/verifyEmail";
+import VerifyEmail from "./components/VerifyEmail";
 import { Toaster } from "sonner";
 import ResetPassword from "./components/ResetPassword";
 import ForgotPassword from "./components/ForgotPassword";
