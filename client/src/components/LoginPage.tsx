@@ -3,6 +3,7 @@ import { useState } from "react";
 import "../App.css";
 import { Login } from "./Login";
 import { Signup } from "./Signup";
+import { Link } from "react-router-dom";
 export const LoginPage = () => {
   const [count, setCount] = useState(0);
   const [changeSignInUp, setChangeSignInUp] = useState(true);
@@ -37,6 +38,9 @@ export const LoginPage = () => {
                 ? "New User? Sign up"
                 : "Already a member? Sign in"}
             </p>
+            <p className="passwordReset">
+  <Link to="/forgot-password">Reset your password here</Link>
+</p>
           </section>
           <section className="mainBoardRight">
             <div className="RightContent">

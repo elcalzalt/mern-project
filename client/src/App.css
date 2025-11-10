@@ -105,8 +105,14 @@
 .changeCta{
   color: rgba(0, 0, 0, 0.7);
 }
-.changeCta:hover{
+.changeCta:hover,.passwordReset:hover{
   color: rgb(234, 108, 54)
+}
+.passwordReset{
+  margin-top: 8px;
+  color: rgba(0, 0, 0, 0.7);
+  text-decoration: underline;
+  cursor: pointer;
 }
 /*=================== Responsive =======================*/
 .rotateNotice{

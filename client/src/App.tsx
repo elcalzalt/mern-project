@@ -5,26 +5,20 @@ import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
 import Feature from "./components/Feature";
 import VerifyEmail from "./components/verifyEmail";
 import { Toaster } from "sonner";
-
+import ResetPassword from "./components/ResetPassword";
+import ForgotPassword from "./components/ForgotPassword";
 function App() {
   return (
     <>
       <Toaster richColors />
       <Router>
-        
-
         <Routes>
-          <Route
-            path="/feature"
-            element={
-              
-                <Feature />
-              
-            }
-          />
+          <Route path="/feature" element={<Feature />} />
 
           <Route path="/" element={<LoginPage />} />
-            <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/verify-email" element={<VerifyEmail />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
         </Routes>
       </Router>
     </>
