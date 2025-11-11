@@ -75,6 +75,10 @@ import FavoriteIcon from "@mui/icons-material/Favorite";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../config";
+import { Dialog, DialogContent, DialogActions, Button } from "@mui/material";
+import { exportToPDF, exportToImage } from "./ExportUtils";
+import { useState } from "react";
+
 export type TodoType = {
 	id: number;
 	exercise: string;
@@ -240,15 +244,53 @@ export const Todo = ({
 			console.error("Error updating todo:", err);
 		}
 	};
+const [openShare, setOpenShare] = useState(false);
+const handleOpenShare = () => setOpenShare(true);
+const handleCloseShare = () => setOpenShare(false);
 
 	return (
 		<>
+		<Dialog open={openShare} onClose={handleCloseShare} fullWidth maxWidth="md">
+  <DialogContent>
+    <div id="share-preview" style={{ padding: 20 }}>
+      <h2 style={{ textAlign: "center", marginBottom: 16 }}>
+        My Workout Summary 🏋️‍♂️
+      </h2>
+      <div>
+        {todos.map((todo) => (
+          <div
+            key={todo.id}
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              borderBottom: "1px solid #ddd",
+              padding: "8px 0",
+            }}
+          >
+            <span>{todo.exercise || "Exercise"}</span>
+			<span>{todo.weight}</span>
+            <span>{todo.sets}x{todo.reps}</span>
+            <span>⭐ {todo.rating}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </DialogContent>
+
+  <DialogActions>
+    <Button onClick={() => exportToPDF("share-preview")}>Export as PDF</Button>
+    <Button onClick={() => exportToImage("share-preview")}>Export as Image</Button>
+    <Button onClick={handleCloseShare}>Close</Button>
+  </DialogActions>
+</Dialog>
+
 			<div className="todoFixWrap">
 				<div className="todoBtnWrap">
 					<button className="todoBtn" onClick={add}>
 						Add
 					</button>
-					<button className="todoBtn">Share</button>
+					<button className="todoBtn" onClick={handleOpenShare}>Share</button>
+
 					<button className="todoBtn" onClick={handleLogout}>
 						Logout
 					</button>

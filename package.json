@@ -1,6 +1,10 @@
 {
   "dependencies": {
+    "@mui/icons-material": "^7.3.5",
+    "@mui/material": "^7.3.5",
     "axios": "^1.13.2",
+    "html2canvas": "^1.4.1",
+    "jspdf": "^3.0.3",
     "nodemailer": "^7.0.10"
   }
 }
