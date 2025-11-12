@@ -174,7 +174,7 @@ export const Todo = ({
         maxWidth="md"
       >
         <DialogContent>
-          <div id="share-preview" className="exportWrap" style={{ }}>
+          <div id="share-preview" className="exportWrap" style={{padding:"10px" }}>
             <h2 style={{ textAlign: "center", marginBottom: 16 }}>
               My Workout Summary 🏋️‍♂️
             </h2>
