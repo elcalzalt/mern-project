@@ -167,3 +167,18 @@
   color: white;
   transform: translateY(-2px);
 }
+.exportWeight{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.exportWeight span{
+  font-weight: 500;
+}
+@media only screen and (max-width: 700px) {
+  .exportWrap{
+    padding: 5px;
+    
+  }
+}

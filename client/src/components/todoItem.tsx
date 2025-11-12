@@ -37,7 +37,7 @@
 //           <Checkbox {...label} />
 //            <button onClick={onDelete} className="deleteBtn"><HighlightOffOutlinedIcon/></button>
 //         </div>
-       
+
 //       </div>
 //       <div className="contentRow">
 //         <Box
@@ -87,7 +87,7 @@
 //               ))}
 //             </NativeSelect>
 //           </FormControl>
-          
+
 //         </Box>
 //       </div>
 //     </div>
@@ -106,30 +106,30 @@ import InputLabel from "@mui/material/InputLabel";
 import NativeSelect from "@mui/material/NativeSelect";
 import TextField from "@mui/material/TextField";
 import Checkbox from "@mui/material/Checkbox";
-import HighlightOffOutlinedIcon from '@mui/icons-material/HighlightOffOutlined';
-import type {TodoType} from "./Todo";
+import HighlightOffOutlinedIcon from "@mui/icons-material/HighlightOffOutlined";
+import type { TodoType } from "./Todo";
 type TodoItemProps = {
   todo: TodoType;
   onUpdate: (updated: TodoType) => void;
   onDelete: () => void;
 };
 
-const label = { slotProps: { input: { 'aria-label': 'Checkbox demo' } } };
+const label = { slotProps: { input: { "aria-label": "Checkbox demo" } } };
 
 export const TodoItem = ({ todo, onUpdate, onDelete }: TodoItemProps) => {
   return (
     <div className="todoItem">
       <div className="exerciseNum">
         <div className="exerciseNumRow">
-          
           <Rating
             name="simple-controlled"
             value={todo.rating}
-            onChange={(event, newValue) => onUpdate({ ...todo, rating: newValue ?? 0 })}
+            onChange={(event, newValue) =>
+              onUpdate({ ...todo, rating: newValue ?? 0 })
+            }
           />
         </div>
         <div style={{ display: "flex", alignItems: "center" }}>
-          
           <button onClick={onDelete} className="deleteBtn">
             <HighlightOffOutlinedIcon />
           </button>
@@ -146,9 +146,11 @@ export const TodoItem = ({ todo, onUpdate, onDelete }: TodoItemProps) => {
           }}
         >
           <ExerciseList
-  value={todo.exercise}
-  onChange={(newExercise) => onUpdate({ ...todo, exercise: newExercise })}
-/>
+            value={todo.exercise}
+            onChange={(newExercise) =>
+              onUpdate({ ...todo, exercise: newExercise })
+            }
+          />
           <TextField
             id="outlined-basic"
             label="lbs"
@@ -164,7 +166,9 @@ export const TodoItem = ({ todo, onUpdate, onDelete }: TodoItemProps) => {
             <NativeSelect
               id="sets-select"
               value={todo.sets}
-              onChange={(e) => onUpdate({ ...todo, sets: parseInt(e.target.value) })}
+              onChange={(e) =>
+                onUpdate({ ...todo, sets: parseInt(e.target.value) })
+              }
             >
               {Array.from({ length: 6 }, (_, i) => (
                 <option key={i + 1} value={i + 1}>
@@ -180,7 +184,9 @@ export const TodoItem = ({ todo, onUpdate, onDelete }: TodoItemProps) => {
             <NativeSelect
               id="reps-select"
               value={todo.reps}
-              onChange={(e) => onUpdate({ ...todo, reps: parseInt(e.target.value) })}
+              onChange={(e) =>
+                onUpdate({ ...todo, reps: parseInt(e.target.value) })
+              }
             >
               {Array.from({ length: 100 }, (_, i) => (
                 <option key={i + 1} value={i + 1}>

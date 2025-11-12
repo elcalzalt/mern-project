@@ -31,7 +31,7 @@ const ResetPassword = () => {
     <div className="auth-container">
       <div className="content">
         <h2>Reset Password</h2>
-        <form onSubmit={handleSubmit}  style ={{display:"flex", gap:"10px", flexDirection:"column",width:"100%", alignItems:"center"}}>
+        <form onSubmit={handleSubmit}  style ={{display:"flex", gap:"10px", flexDirection:"column",width:"100%", alignItems:"center",}}>
           <TextField
             type="password"
             placeholder="Enter new password"
