@@ -15,8 +15,6 @@ type TodoItemProps = {
   onDelete: () => void;
 };
 
-const label = { slotProps: { input: { "aria-label": "Checkbox demo" } } };
-
 export const TodoItem = ({ todo, onUpdate, onDelete }: TodoItemProps) => {
   return (
     <div className="todoItem">
@@ -25,7 +23,7 @@ export const TodoItem = ({ todo, onUpdate, onDelete }: TodoItemProps) => {
           <Rating
             name="simple-controlled"
             value={todo.rating}
-            onChange={(event, newValue) =>
+            onChange={(_, newValue) =>
               onUpdate({ ...todo, rating: newValue ?? 0 })
             }
           />
