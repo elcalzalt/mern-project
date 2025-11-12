@@ -30,14 +30,12 @@ export const Login = () => {
 		resolver: zodResolver(signInSchema),
 	});
 	const onSubmit = async (data: SignInFormValues) => {
-		setUsername(data.email);
-		setPassword(data.password);
+		
 		await handleLogin(data.email, data.password);
 	};
 
 	const [showPassword, setShowPassword] = React.useState(false);
-	const [username, setUsername] = useState("");
-	const [password, setPassword] = useState("");
+	
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
 	const handleMouseDownPassword = (
 		event: React.MouseEvent<HTMLButtonElement>
@@ -57,7 +55,7 @@ export const Login = () => {
 
 			if (response.ok) {
 				localStorage.setItem("token", data.token); // save JWT
-				SetMessage("Login failed");
+				SetMessage("Login successfully");
 				SetMessageColor("green")
 				navigate("/feature");
 			} else {

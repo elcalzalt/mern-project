@@ -1,11 +1,10 @@
-import React from "react";
+
 import { useState } from "react";
 import "../App.css";
 import { Login } from "./Login";
 import { Signup } from "./Signup";
 import { Link } from "react-router-dom";
 export const LoginPage = () => {
-  const [count, setCount] = useState(0);
   const [changeSignInUp, setChangeSignInUp] = useState(true);
   const [changeTextSign, setChangeTextSign] = useState(true);
   const change = () => setChangeSignInUp((changed) => !changed);

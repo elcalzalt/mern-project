@@ -166,7 +166,7 @@ export default function Feature() {
 
       <div className="calendar">
         <Calendar
-          selectedDate={selectedDate}
+         
           onDateSelect={handleDateSelect}
           todosByDate={todosByDate}
         />

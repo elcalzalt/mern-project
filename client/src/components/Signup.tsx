@@ -1,6 +1,5 @@
 import React from "react";
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import TextField from "@mui/material/TextField";
 import IconButton from "@mui/material/IconButton";
 import InputAdornment from "@mui/material/InputAdornment";
@@ -13,7 +12,6 @@ import "./Login.css";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Button from "@mui/material/Button";
 import { API_BASE_URL } from "../config";
 const signUpSchema = z.object({
 	firstname: z.string().min(1, "At least 1 character for firstname"),
@@ -40,7 +38,6 @@ export const Signup = () => {
 	});
 	const [showRequirements, setShowRequirements] = useState(false);
 	const [showPassword, setShowPassword] = React.useState(false);
-	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
 	const [message, setMessage] = useState("");
@@ -138,7 +135,7 @@ export const Signup = () => {
 						type={showPassword ? "text" : "password"}
 						{...register("password", {
 							onChange: (e) => setPassword(e.target.value), // keeps live requirement check
-							onBlur: (e) => {
+							onBlur: () => {
 								if (!isSubmitting) {
 									setShowRequirements(false); // only hide when not submitting
 								}

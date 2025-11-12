@@ -1,14 +1,11 @@
 
-import React from "react";
+
 import "./Feature.css";
 import { TodoItem } from "./todoItem";
-import { styled } from "@mui/material/styles";
-import Rating from "@mui/material/Rating";
 import FavoriteIcon from "@mui/icons-material/Favorite";
-import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import { useNavigate } from "react-router-dom";
 import { API_BASE_URL } from "../config";
-import { Dialog, DialogContent, DialogActions, Button, TextField } from "@mui/material";
+import { Dialog, DialogContent, DialogActions, Button } from "@mui/material";
 import { exportToPDF, exportToImage } from "./ExportUtils";
 import { useState } from "react";
 
@@ -32,36 +29,15 @@ type TodoProps = {
   setHpRemaining: (value: number | null) => void;
 };
 
-const StyledRating = styled(Rating)({
-  "& .MuiRating-iconFilled": {
-    color: "#ff6d75",
-  },
-  "& .MuiRating-iconHover": {
-    color: "#ff3d47",
-  },
-});
+
 const API_BASE = `${API_BASE_URL}/api/todo`;
 
 export const Todo = ({
   todos,
   onChange,
   selectedDate,
-  hpRemaining,
-  setHpRemaining,
 }: TodoProps) => {
-  const saveHpToBackend = async (newValue: number | null) => {
-    const token = localStorage.getItem("token");
-    if (!token || newValue == null) return;
 
-    await fetch(`${API_BASE}/hp/${selectedDate}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({ hpRemaining: newValue }),
-    });
-  };
   const navigate = useNavigate();
   const handleLogout = () => {
     localStorage.removeItem("token");
@@ -240,7 +216,7 @@ export const Todo = ({
       </div>
 
       <div className="listBody">
-        {todos.map((todo, index) => (
+        {todos.map((todo) => (
           <TodoItem
             key={todo.id}
             todo={todo}
