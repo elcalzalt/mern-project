@@ -1,71 +1,4 @@
-// import React, { useState } from "react";
-// import "./Feature.css";
-// import { TodoItem } from "./todoItem";
-// import { styled } from "@mui/material/styles";
-// import Rating from "@mui/material/Rating";
-// import FavoriteIcon from "@mui/icons-material/Favorite";
-// import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
-// type TodoType = {
-//   id: number; // unique
-//   text: string;
-// };
-// const StyledRating = styled(Rating)({
-//   "& .MuiRating-iconFilled": {
-//     color: "#ff6d75",
-//   },
-//   "& .MuiRating-iconHover": {
-//     color: "#ff3d47",
-//   },
-// });
-// export const Todo = () => {
-//   const [todos, setTodos] = useState<TodoType[]>([]);
 
-//   const add = () => {
-//     setTodos([
-//       ...todos,
-//       { id: Date.now(), text: `Exercise ${todos.length + 1}` },
-//     ]);
-//   };
-//   const deleteTodo = (id: number) => {
-//     setTodos(todos.filter((todo) => todo.id !== id));
-//   };
-//   return (
-//     <>
-//       <div className="todoFixWrap">
-//         <div className="todoBtnWrap">
-//           <button className="todoBtn" onClick={add}>
-//             Add
-//           </button>
-//           <button className="todoBtn"> Share</button>
-//           <button className="todoBtn"> Compare </button>
-//         </div>
-//         <div className="hpCheck">
-//           <span>HP remaining after training: </span>
-//           <StyledRating
-//             name="customized-color"
-//             defaultValue={2}
-//             getLabelText={(value: number) =>
-//               `${value} Heart${value !== 1 ? "s" : ""}`
-//             }
-//             precision={0.5}
-//             icon={<FavoriteIcon fontSize="inherit" />}
-//             emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
-//           />
-//         </div>
-//       </div>
-
-//       <div className="listBody" id="body">
-//         {todos.map((todo, index) => (
-//           <TodoItem
-//             key={todo.id}
-//             text={`Exercise ${index + 1}`}
-//             onDelete={() => deleteTodo(todo.id)}
-//           />
-//         ))}
-//       </div>
-//     </>
-//   );
-// };
 import React from "react";
 import "./Feature.css";
 import { TodoItem } from "./todoItem";
@@ -116,19 +49,6 @@ export const Todo = ({
   hpRemaining,
   setHpRemaining,
 }: TodoProps) => {
-  // const add = () => {
-  //   const newTodo: TodoType = {
-  //     id: Date.now(),
-  //     exercise:"",
-  //     text: "",
-  //     weight: "",
-  //     sets: 4,
-  //     reps: 10,
-  //     rating: 2,
-  //     done: false,
-  //   };
-  //   onChange([...todos, newTodo]);
-  // };
   const saveHpToBackend = async (newValue: number | null) => {
     const token = localStorage.getItem("token");
     if (!token || newValue == null) return;
@@ -198,9 +118,6 @@ export const Todo = ({
     }
   };
 
-  // const deleteTodo = (id: number) => {
-  //   onChange(todos.filter((t) => t.id !== id));
-  // };
   const deleteTodo = async (id: number) => {
     const token = localStorage.getItem("token");
 
@@ -319,35 +236,10 @@ export const Todo = ({
             Stay consistent. Stay strong. Every rep counts{" "}
             <FavoriteIcon fontSize="inherit" sx={{ color: "#ff6d75" }} />
           </span>
-          {/* <StyledRating
-            name="customized-color"
-            defaultValue={2}
-            precision={0.5}
-            icon={<FavoriteIcon fontSize="inherit" />}
-            emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
-          /> */}
-          {/* <StyledRating
-  name="hp-remaining"
-  value={hpRemaining}
-  onChange={(_, newValue) => {
-    setHpRemaining(newValue);
-    saveHpToBackend(newValue); // optional step 2
-  }}
-  precision={0.5}
-  icon={<FavoriteIcon fontSize="inherit" />}
-  emptyIcon={<FavoriteBorderIcon fontSize="inherit" />}
-/> */}
         </div>
       </div>
 
       <div className="listBody">
-        {/* {todos.map((todo, index) => (
-          <TodoItem
-            key={todo.id}
-            text={todo.text || `Exercise ${index + 1}`}
-            onDelete={() => deleteTodo(todo.id)}
-          />
-        ))} */}
         {todos.map((todo, index) => (
           <TodoItem
             key={todo.id}

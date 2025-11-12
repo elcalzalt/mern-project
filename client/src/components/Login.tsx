@@ -13,7 +13,6 @@ import "./Login.css";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import Button from "@mui/material/Button";
 import { API_BASE_URL } from "../config";
 const signInSchema = z.object({
 	email: z.email("Please enter valid email"),
@@ -21,6 +20,8 @@ const signInSchema = z.object({
 });
 type SignInFormValues = z.infer<typeof signInSchema>;
 export const Login = () => {
+	const [message,SetMessage] = useState("");
+	const [messageColor,SetMessageColor] = useState("");
 	const {
 		register,
 		handleSubmit,
@@ -56,13 +57,17 @@ export const Login = () => {
 
 			if (response.ok) {
 				localStorage.setItem("token", data.token); // save JWT
+				SetMessage("Login failed");
+				SetMessageColor("green")
 				navigate("/feature");
 			} else {
-				alert(data.message || "Login failed");
+				SetMessage(data.message || "Login failed");
+				SetMessageColor("red")
 			}
 		} catch (error) {
 			console.error("Error:", error);
-			alert("Server error");
+			SetMessage("something failed");
+				SetMessageColor("red")
 		}
 	};
 
@@ -125,6 +130,7 @@ export const Login = () => {
 					<button type="submit" disabled={isSubmitting}>
 						Login
 					</button>
+					<span style={{color:messageColor}}>{message}</span>
 				</div>
 			</form>
 		</>

@@ -29,6 +29,7 @@ const signUpSchema = z.object({
 		.regex(/[^A-Za-z0-9]/, "At least one special character"),
 });
 type SignUpFormValues = z.infer<typeof signUpSchema>;
+
 export const Signup = () => {
 	const {
 		register,
@@ -42,6 +43,8 @@ export const Signup = () => {
 	const [username, setUsername] = useState("");
 	const [password, setPassword] = useState("");
 	const handleClickShowPassword = () => setShowPassword((show) => !show);
+	const [message, setMessage] = useState("");
+  const [messageColor, setMessageColor] = useState("black");
 	const handleMouseDownPassword = (
 		event: React.MouseEvent<HTMLButtonElement>
 	) => {
@@ -62,14 +65,17 @@ export const Signup = () => {
 			const result = await response.json();
 
 			if (response.ok) {
-				alert("Sign up successful! You can now log in.");
+				setMessage("Sign up successful! You can now log in.");
+				setMessageColor("green");
 				// Optionally redirect to login page
 			} else {
-				alert(result.message || "Signup failed");
+				setMessage(result.message || "Signup failed.");
+        setMessageColor("red");
 			}
 		} catch (error) {
 			console.error("Error:", error);
-			alert("Server error");
+			 setMessage("Something went wrong. Please try again.");
+      setMessageColor("red");
 		}
 	};
 
@@ -213,6 +219,7 @@ export const Signup = () => {
 					>
 						Sign up
 					</button>
+					{message && <p style={{ color: messageColor }}>{message}</p>}
 				</div>
 			</form>
 		</>
