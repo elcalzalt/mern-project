@@ -3,10 +3,7 @@ import 'package:webview_flutter/webview_flutter.dart';
 
 void main() {
   runApp(
-    MaterialApp(
-      theme: ThemeData(useMaterial3: true),
-      home: const WebViewApp(),
-    ),
+    MaterialApp(theme: ThemeData(useMaterial3: true), home: const WebViewApp()),
   );
 }
 
@@ -27,19 +24,15 @@ class _WebViewAppState extends State<WebViewApp> {
       ..setJavaScriptMode(JavaScriptMode.unrestricted)
       ..loadRequest(
         //Uri.parse('https://flutter.dev'),
-        Uri.parse('http://10.0.2.2:5173/'),
+        Uri.parse('https://matlikeys.com'),
       );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Flutter WebView'),
-      ),
-      body: WebViewWidget(
-        controller: controller,
-      ),
+      appBar: AppBar(title: const Text('Flutter WebView')),
+      body: WebViewWidget(controller: controller),
     );
   }
 }
