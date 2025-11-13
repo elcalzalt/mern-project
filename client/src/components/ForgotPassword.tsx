@@ -3,6 +3,7 @@ import type { FormEvent, ChangeEvent } from "react";
 import axios, { AxiosError } from "axios";
 import "./PasswordReset.css";
 import TextField from "@mui/material/TextField";
+import { API_BASE_URL } from "../config";
 const ForgotPassword = () => {
 	const [email, setEmail] = useState("");
 	const [message, setMessage] = useState("");

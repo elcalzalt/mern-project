@@ -4,6 +4,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import axios, { AxiosError } from "axios";
 import "./PasswordReset.css";
 import TextField from "@mui/material/TextField";
+import { API_BASE_URL } from "../config";
 const ResetPassword = () => {
 	const [searchParams] = useSearchParams();
 	const navigate = useNavigate();
